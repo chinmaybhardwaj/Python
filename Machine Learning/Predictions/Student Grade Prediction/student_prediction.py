@@ -2,6 +2,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn import svm
 
+# =============================================================================
+#  Read Student dataset from the 'student/student-mat.csv'
+#  Check description of each feature from 'student/student.txt'
+# =============================================================================
+
 df = pd.read_csv('./student/student-mat.csv', delimiter=';')
 
 print(df.head())

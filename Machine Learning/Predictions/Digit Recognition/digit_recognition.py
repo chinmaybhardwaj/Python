@@ -44,6 +44,7 @@ iso.fit(X)
 data_projected = iso.transform(X)
 print('Isomap data projected: ', data_projected.shape)
 # Plot Isomap projected data 
+plt.figure()
 plt.scatter(data_projected[:, 0], data_projected[:,1], c=y, edgecolor='none', 
             alpha=0.5, cmap=plt.cm.get_cmap('nipy_spectral', 10))
 plt.colorbar(label='digit label', ticks=range(10))

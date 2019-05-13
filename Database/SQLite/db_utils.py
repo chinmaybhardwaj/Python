@@ -1,4 +1,4 @@
-import pymysql
+import sqlite3
 
     
 # =============================================================================
@@ -14,40 +14,23 @@ def connect_db(database=None):
     print('Checking Connection...')
     
     connection = None
+    db = database + '.db'
     
-    if database is None:
+    if database is not None:
         print('Connecting to localhost...')
         #
         # Connect to the database
         #
         try:
-            connection = pymysql.connect(host='localhost',
-                             user='root',
-                             password='12345678',
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor)
-            print('Connected to localhost....')
+            connection = sqlite3.connect(db)
+            print('Connected to', db, '....')
             
-        except pymysql.Error as e:
-            print('Error connecting to localhost. Error:\n', e)       
+        except Exception as e:
+            print('Error connecting to ', db, '. Error:\n', e)       
         
     else:
-        print('Connecting to', database, '...')
-        #
-        # Connect to a specific database
-        #
-        try:
-            connection = pymysql.connect(host='localhost',
-                             user='root',
-                             password='12345678',
-                             db=database,
-                             charset='utf8mb4',
-                             cursorclass=pymysql.cursors.DictCursor) 
-            print('Connected to', database, '...')
-            
-        except pymysql.Error as e:
-            print('Error connecting to', database, 'Error:\n', e) 
-    
+        print('Please check database name')
+
     
     return connection
 
@@ -65,7 +48,7 @@ def close_connection(connection):
         try:
             connection.close()
             status = 'Connection closed successfully.'
-        except pymysql.Error as e:
+        except Exception as e:
             status = 'Error: {}'.format(e)
             
     else:
@@ -100,7 +83,7 @@ def create_new_db(connection, db_name):
                 status = True
                 print('Database', db_name, 'created successfully...')
                 
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error creating new database.', db_name, '\n', e)
             
     else:
@@ -131,7 +114,7 @@ def delete_db(connection, db_name):
                 status = True
                 print('Database:', db_name, 'deleted successfully...')
                 
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error deleting database:', db_name, '\n', e)
             
     else:
@@ -158,7 +141,6 @@ def create_new_table(connection, table_name):
             with connection.cursor() as cursor:
                 # Create a new Database
                 create_table_query = "CREATE TABLE IF NOT EXISTS " + table_name + "(email CHAR(20) NOT NULL, password CHAR(20))"
-               
                 cursor.execute(create_table_query)
           
                 # connection is not autocommit by default. So you must commit to save
@@ -168,7 +150,7 @@ def create_new_table(connection, table_name):
                 status = True
                 print('Table:', table_name, 'created successfully...')
                 
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error creating new table:', table_name, '\n', e)
             
     else:
@@ -199,7 +181,7 @@ def delete_table(connection, table_name):
                 status = True
                 print('Table:', table_name, 'deleted successfully...')
                 
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error deleting table:', table_name, '\n', e)
             
     else:
@@ -238,7 +220,7 @@ def insert_query(connection, table_name, row_dict):
             status = True
             print('Successfully inserted data.\nQuery:\n', sql)
             
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error while inserting.\nQuery:\n', sql, '\nError:\n', e)
         
     else:
@@ -260,15 +242,21 @@ def search_email_query(connection, table_name, email):
         
             with connection.cursor() as cursor:
                 # Read a single record
-                sql = "SELECT `email`, `password` FROM `" + table_name + "` WHERE `email`=%s"
-                cursor.execute(sql, (email,))
+#                sql = "SELECT `email`, `password` FROM `" + table_name + "` WHERE `email`=%s"
+#                cursor.execute(sql, (email,))
+                
+                # Passing email directly is insecure
+                # Do this instead
+                txt = (email,)
+                cursor.execute("SELECT `email`, `password` FROM `" + table_name + "` WHERE `email`=?", txt)
+
                 result = cursor.fetchone()
                 
                 print(result)     
                 status = True
                 print('Successfully inserted data.\nQuery:\n', sql)
         
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error while inserting.\nQuery:\n', sql, '\nError:\n', e)
            
     else:
@@ -294,7 +282,7 @@ def master_query(connection, query):
                 status = True
                 print('Successfully.\nQuery:\n', query)
         
-        except pymysql.Error as e:
+        except Exception as e:
             print('Error.\nQuery:\n', query, '\nError:\n', e)       
         
     else:
@@ -302,3 +290,4 @@ def master_query(connection, query):
         
     return status   
         
+      

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import numpy as np

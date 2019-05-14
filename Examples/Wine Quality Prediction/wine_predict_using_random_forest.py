@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 '''
     This script shows predictions of wine using RandomForestClassifier 
 '''

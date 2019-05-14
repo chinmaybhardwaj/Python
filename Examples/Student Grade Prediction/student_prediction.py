@@ -7,7 +7,7 @@ from sklearn import svm
 #  Check description of each feature from 'student/student.txt'
 # =============================================================================
 
-df = pd.read_csv('./student/student-mat.csv', delimiter=';')
+df = pd.read_csv('./dataset/student-mat.csv', delimiter=';')
 
 print(df.head())
 

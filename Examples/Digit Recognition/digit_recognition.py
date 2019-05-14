@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 import matplotlib.pyplot as plt
 from sklearn.manifold import Isomap
 from sklearn.naive_bayes import GaussianNB

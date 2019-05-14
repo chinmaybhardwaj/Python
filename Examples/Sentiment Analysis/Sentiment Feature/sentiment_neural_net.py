@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import tensorflow as tf
 from create_sentiment_features import create_feature_sets_and_labels
 import numpy as np

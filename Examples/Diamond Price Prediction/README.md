@@ -1,16 +1,12 @@
 # Diamond Price Prediction 
 
-This code helps you classify benign and malignant tumors using KNeighborsClassifier algorithm.
+This dataset contains the prices and other attributes of almost 54,000 diamonds. Predicted prices of test data using Support Vector Machine(SVM)
 
 ### Prerequisites
 
-The dataset folder contains two files:
-1. breast-cancer-wisconsin.data (Dataset used for predicting)
-2. breast-cancer-wisconsin.names (Contains description for columns in file 1)
-
-The dataset can be downloaded from the following link:
-* [Dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Original%29) - Breast Cancer Wisconsin (Original) Data Set
+The dataset folder contains daimonds.csv file which can be downloaded from:
+* [Dataset](https://www.kaggle.com/shivam2503/diamonds)
 
 
 ### Accuracy
-~ 0.97
+Using Linear kernel ~ 0.87

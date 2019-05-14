@@ -2,6 +2,8 @@
 
 Implementation of Machine Learning, Deep Learning Algorithms, OpenCV and Database operations using Python.
 
+* [Examples](https://github.com/chinmaybhardwaj/Python/tree/master/Examples)
+
 * [Machine Learning](https://github.com/chinmaybhardwaj/Python/tree/master/Machine%20Learning)
 
 * [Deep Learning](https://github.com/chinmaybhardwaj/Python/tree/master/Deep%20Learning)
@@ -13,4 +15,4 @@ Implementation of Machine Learning, Deep Learning Algorithms, OpenCV and Databas
   
 * [OpenCV](https://github.com/chinmaybhardwaj/Python/tree/master/OpenCV)
 
-* [Examples](https://github.com/chinmaybhardwaj/Python/tree/master/Examples)
+

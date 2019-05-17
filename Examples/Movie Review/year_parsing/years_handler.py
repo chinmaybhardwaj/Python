@@ -28,7 +28,7 @@ def save_html(soup):
         
     # Write HTML String to Lists_of_films.html
     with open("./source/Lists_of_films.html", "w") as file:
-        file.write(str(soup))
+        file.write(str(soup.encode("utf-8")))
         print('Lists_of_films.html created!')  
     
     
@@ -68,33 +68,32 @@ def parse_html(divs):
 
 
 #
-# Save Years and Links to years.csv
+# Save Years and Links to years_table.csv
 #
 def save_to_csv(text=[], href=[]):
-    outputdir = './dataset'
+    outputdir = './source'
     if not os.path.exists(outputdir):
         os.mkdir(outputdir)
         
-    # Write DataFrame to years.csv
-#    df = pd.DataFrame({'year':text, 'link':href})
+    # Write DataFrame to years_table.csv
     df = pd.DataFrame()
     df['year'] = text
     df['link'] = href
-    df.to_csv('./dataset/years.csv', sep='', encoding='utf-8')
+    df.to_csv('./source/years_table.csv', sep=',', index=False, encoding='utf-8')
     print('years.csv created!')  
     
     
     
 #
-# Load dataframe from years.csv
+# Load dataframe from years_table.csv
 #    
 def load_years_csv():
-    outputdir = './dataset/years.csv'
+    outputdir = './source/years_table.csv'
     if not os.path.exists(outputdir):
-        print('years.csv does not exist!')
+        print('years_table.csv does not exist!')
         return None
         
-    # Read DataFrame from years.csv
+    # Read DataFrame from years_table.csv
     with open(outputdir, "r") as file:
         df = pd.read_csv(file)
         print('Loading years.csv !') 

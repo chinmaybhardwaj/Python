@@ -1,27 +1,21 @@
 import os
-from years_handler import get_years
+import pandas as pd
+from year_scrapper import get_year
 
 
-def clean_df(df):
+
+def get_url(df):
     if df is not None:
-        #
-        # Remove unwanted rows
-        # Removing rows : (view, talk, edit, 2020s)
-        #
-        df = df[4:]
+        get_year('2000', '/wiki/2000_in_film')
         
-        #
-        # Remove rows that contain string 's'
-        #
-        df = df[~df['year'].str.contains('s')]
-        
-        # Sort rows by year
-        df = df.sort_values(by ='year')
-        
-        #Save dataframe
-        save_to_csv(df)
+#        for index, row in df.iterrows():
+#            name = row['year']
+#            url = row['link']
+#
+#            # Get HTML page for given year URL
+#            get_year(str(name), url)
     else:
-        print('Error in parsing DataFrame')
+        print('year_parser.py','Error in parsing DataFrame')
 
 
 #
@@ -34,14 +28,28 @@ def save_to_csv(df):
         
     # Write DataFrame to years.csv
     df.to_csv('./dataset/years.csv', sep=',', index=False, encoding='utf-8')
-    print('years.csv created!')
+    print('year_parser.py','years.csv created!')
     
     
-    
+#
+# Load dataframe from years.csv
+#    
+def load_years_csv():
+    outputdir = './dataset/years.csv'
+    if not os.path.exists(outputdir):
+        print('year_parser.py','years.csv does not exist!')
+        return None
+        
+    # Read DataFrame from years_table.csv
+    with open(outputdir, "r") as file:
+        df = pd.read_csv(file)
+        print('year_parser.py','Loading years.csv !') 
+        
+    return df
 #
 # Load dataframe from csv
 #
-df = get_years()
+df = load_years_csv()
 
-clean_df(df)
+get_url(df)
 

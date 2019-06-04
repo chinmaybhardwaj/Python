@@ -96,7 +96,7 @@ def load_years_csv():
     # Read DataFrame from years_table.csv
     with open(outputdir, "r") as file:
         df = pd.read_csv(file)
-        print('Loading years.csv !') 
+        print('Loading years_table.csv !') 
         
     return df
     

@@ -2,13 +2,13 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import os
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-from selenium import webdriver
+#from requests.adapters import HTTPAdapter
+#from requests.packages.urllib3.util.retry import Retry
+import time
 
 # =============================================================================
-# Parse HTML and get links for each year.
-# URL: https://en.wikipedia.org/wiki/Lists_of_films
+# Parse HTML and get title, link, production, cast and other details of each movie.
+# URL: https://en.wikipedia.org/wiki/name_of_movie
 # =============================================================================
 
 
@@ -19,23 +19,12 @@ base_url = 'https://en.wikipedia.org'
 #
 def get_year_page(url=''):
     response = requests.get(url)
-    session = requests.Session()
-    retry = Retry(connect=3, backoff_factor=0.5)
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-    response = session.get(url)
     soup = BeautifulSoup(response.text, features="html.parser")
-#    
-#    browser = webdriver.Firefox()
-#    browser.get(url)
-#    
-#    html = browser.page_source
-#    soup = BeautifulSoup(html, features="html.parser")
+
     return soup
 
 #
-# Save HTML response to Lists_of_films.html file in source directory
+# Save HTML response to year_name.html file in source directory
 #
 def save_html(name, soup):
     outputdir = './source/html'
@@ -46,74 +35,99 @@ def save_html(name, soup):
     filename = outputdir + '/' + name + '.html'
     with open(filename, "w") as file:
         file.write(str(soup.encode("utf-8")))
-        print(name,'html created!')  
+        print('year_scrapper.py:', name,'html created!')  
     
     
 #
-# Load HTML response from Lists_of_films.html
+# Load HTML response from year_name.html if present
 #
 def load_html(name):
     outputdir = './source/html/' + name + '.html'
     if not os.path.exists(outputdir):
-        print(name, 'html does not exist!')
+        print('year_scrapper.py:', name, 'html does not exist!')
         return None
         
-    # Read HTML String from Lists_of_films.html
+    # Read HTML String from year_name.html and convert it to bs object
     with open(outputdir, "r") as file:
         soup = BeautifulSoup(file, features="html.parser")
-        print('Loading', name, 'html !')  
+        print('year_scrapper.py:', 'Loading', name, 'html !')  
         
     return soup
 
 
 #
-# Parse HTMl to get list of all years and their links
+# Parse HTMl to get list of all movies and their title, link, cast, genre, production
 #
-def parse_html(divs):
-    href = []
-    text = []
+def parse_html(divs):    
+    data = []    
     for mydiv in divs:
-        dt_a = mydiv.find_all("a", href=True)
-        print(mydiv)
-        for a in dt_a:
-            print(a.text, '-------', a["href"])
-            href.append(a["href"])
-            text.append(a.text)
-        
-    return text, href
+        table_rows = mydiv.find_all("tr")
+        for tr in table_rows:
+
+            td_a = tr.find_all("a", href=True)
+           
+            movie = {}
+            count = 0
+            movie['cast'] = ''
+            for a in td_a:              
+                if count == 0:
+                    movie['title'] = a.text
+                    movie['link'] = a['href']
+                    movie['detail'] = td_a
+                elif count == 1:
+                    movie['production'] = a.text
+                elif count == 3:
+                    pass 
+                elif count == len(td_a)-2:
+                    movie['genre'] = a.text
+                elif count == len(td_a)-1:
+                    pass
+                else:
+                    if len(movie['cast']) == 0:
+                        movie['cast'] = a.text
+                    else:
+                        movie['cast'] = movie['cast'] + ', ' + a.text
+                        
+                count = count + 1
+            data.append(movie)
+    print('----------------\n\n', data[:2])
+
+
+    return data
 
 
 #
-# Save Years and Links to years_table.csv
+# Save the movie details in year_name.csv
 #
-def save_to_csv(name, text=[], href=[]):
+def save_to_csv(name, result):
     outputdir = './source/csv/'
     if not os.path.exists(outputdir):
         os.mkdir(outputdir)
         
-    # Write DataFrame to years.csv
-    df = pd.DataFrame()
-    df['year'] = text
-    df['link'] = href
+    # Convert list to dataframe and rearrange the columns
+    cols = ['title', 'link', 'genre', 'production', 'cast', 'detail']
+    df = pd.DataFrame(result)
+    df = df[cols]
+    # Write DataFrame to years_name.csv
     csv_name = outputdir + name + '.csv'
     df.to_csv(csv_name, sep=',', index=False, encoding='utf-8')
-    print(name, 'csv created!')  
+    print('year_scrapper.py:', name, 'csv created!')  
     
     
     
 #
-# Load dataframe from year.csv
+# Load dataframe from year_name.csv
 #    
 def load_years_csv(name):
     outputdir = './source/csv/' + name + '.csv'
     if not os.path.exists(outputdir):
-        print(name, 'csv does not exist!')
+        print('year_scrapper.py:', name, 'csv does not exist!')
         return None
         
     # Read DataFrame from year.csv
     with open(outputdir, "r") as file:
         df = pd.read_csv(file)
-        print('Loading', name, 'csv !') 
+        print('year_scrapper.py:', 'Loading', name, 'csv !') 
         
     return df
     
@@ -132,12 +146,12 @@ def get_year(name='', url=''):
             soup = get_year_page(url = base_url + url) 
             save_html(name, soup)
         
-        mydivs = soup.findAll("table",{"class":"wikitable sortable jquery-tablesorter"})
-        text, href = parse_html(mydivs)
-        save_to_csv(name, text=text, href=href)
-        
+        mydivs = soup.findAll("table",{"class":"wikitable sortable"})
+        result = parse_html(mydivs)
+        save_to_csv(name, result)
+        time.sleep(2)
     else:
-        print('CSV ready to use!')
+        print('year_scrapper.py:', 'CSV ready to use!')
         return df
 
         

@@ -16,7 +16,7 @@ Predictions based on different Machine Learning and Deep Learning Algorithms.
 
 * [Movie Review](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Movie%20Review/year_parsing) - Scrapping data and predicting review
 
-* [NLTK](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/NLTK) - Using Corpos and Tokenize
+* [NLTK](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/NLTK) - Using Corpus and Tokenize
 
 * [Sentiment Analysis](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Sentiment%20Analysis)
   * [Sentiment Feature](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Sentiment%20Analysis/Sentiment%20Feature) - Using WordNetLemmatizer and word_tokenize

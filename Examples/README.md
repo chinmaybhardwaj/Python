@@ -10,6 +10,8 @@ Predictions based on different Machine Learning and Deep Learning Algorithms.
 
 * [Dogs vs Cats Classification](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Dogs%20vs%20Cats%20Prediction) - Using Tensorflow
 
+* [Face Detection](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/FaceDetection) - Using OpenCV and Haar Classifier
+
 * [Iris Dataset Prediction](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Iris%20Dataset%20Prediction) - Using KNeighborsClassifier
 
 * [Misc](https://github.com/chinmaybhardwaj/Python/tree/master/Examples/Misc) - Miscellaneous scripts

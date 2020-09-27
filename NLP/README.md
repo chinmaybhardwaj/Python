@@ -1,3 +1,3 @@
 # Natural Language Processing
 
-Implementation NLP Algorithms from scratch using Python.
+Implementation of NLP Algorithms from scratch using Python.

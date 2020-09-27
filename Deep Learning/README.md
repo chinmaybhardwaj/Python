@@ -1,3 +1,3 @@
 # Deep Learning
 
-Implementation Deep Learning Algorithms from scratch using Python.
+Implementation of Deep Learning Algorithms from scratch using Python.

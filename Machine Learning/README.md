@@ -1,3 +1,3 @@
 # Machine Learning
 
-Implementation Machine Learning Algorithms from scratch using Python.
+Implementation of Machine Learning Algorithms from scratch using Python.
